@@ -1,51 +1,7 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full-Stack Login & Register Form With User & Admin Page | Codehal</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-    <div class="container">
-    <div class="form-box active" id="login-form">
-        <form action="FETCH_MANOLO_PROJECT" method="post">
-            <h2>Login</h2>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" name="login">Login</button>
-            <p>Don't have an account? <a href="#" onclick="showForm('register-form')">Register</a></p>
-        </form>
-    </div>
-</div>
-<div class="form-box" id="register-form">
-        <form action="FETCH_MANOLO_PROJECT" method="post">
-            <h2>Register</h2>
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <select name="role" required>
-                <option value="">--Select Role--</option>
-                <option value="user">User</option>
-                <option value="rider">Rider</option>
-            </select>
-            <button type="submit" name="Register">Register</button>
-            <p>Already have an account? <a href="#"onclick="showForm('login-form')">login</a></p>
-        </form>
-    </div>
-</div>
-<script src="script.js"></script>
-
-</body>
-
-=======
 <?php
 session_start();
 
-// 1. Capture errors AND success messages from the session
+
 $errors = [
     'login' => $_SESSION['login_error'] ?? '',
     'register' => $_SESSION['register_error'] ?? '',
@@ -54,7 +10,7 @@ $errors = [
 
 $activeForm = $_SESSION['active_form'] ?? 'login';
 
-// 2. Clear specific session messages ONLY so they don't show up again on refresh
+
 unset($_SESSION['login_error']);
 unset($_SESSION['register_error']);
 unset($_SESSION['register_success']);
@@ -88,7 +44,7 @@ function isActiveForm($formName, $activeForm) {
                 <h2>Login</h2>
                 <?php 
                     echo showError($errors['login']); 
-                    echo showSuccess($errors['success']); // Shows "Registration Successful" here
+                    echo showSuccess($errors['success']); 
                 ?>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
@@ -118,5 +74,4 @@ function isActiveForm($formName, $activeForm) {
 
     <script src="script.js"></script>
 </body>
->>>>>>> 110cb44 (Fixing the the connection to database and Successfull)
 </html>
