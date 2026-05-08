@@ -37,6 +37,23 @@ function isActiveForm($formName, $activeForm) {
     <title>Login & Register</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<script>
+
+function showFields(){
+
+    let role = document.getElementById("role").value;
+
+    let riderFields = document.getElementById("riderFields");
+
+    if(role === "rider"){
+        riderFields.style.display = "block";
+    }else{
+        riderFields.style.display = "none";
+    }
+
+}
+
+</script>
 <body>
     <div class="container">
         <div class="form-box <?= isActiveForm('login', $activeForm) ?>" id="login-form">
@@ -60,12 +77,29 @@ function isActiveForm($formName, $activeForm) {
                 <input type="text" name="name" placeholder="Name" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <select name="role" required>
-                    <option value="">--Select Role--</option>
-                    <option value="user">User</option>
-                    <option value="rider">Rider</option>
-                    <option value="admin">Admin</option>
-                </select>
+          <select id="role" name="role" onchange="showFields()">
+              <option value="user">Customer</option>
+              <option value="rider">Rider</option>
+          </select>
+                   <div id="riderFields" style="display:none;">
+
+    <input type="text"
+           name="license"
+           placeholder="Driver License Number">
+
+    <input type="text"
+           name="vehicle"
+           placeholder="Vehicle Type">
+
+    <input type="text"
+           name="plate"
+           placeholder="Plate Number">
+
+    <input type="text"
+           name="address"
+           placeholder="Barangay Address">
+
+</div>
                 <button type="submit" name="Register">Register</button>
                 <p>Already have an account? <a href="#" onclick="showForm('login-form')">Login</a></p>
             </form>
