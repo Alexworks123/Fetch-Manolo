@@ -15,20 +15,24 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Page</title>
-    <link rel="stylesheet" href="style.css">
+ <link rel="stylesheet" href="style.css">
 </head>
-
-<body style="Background: #fff;">
-
+<body>
 
 <div class="box">
-    <h1>Welcome, <span><?= $_SESSION['name']; ?></span></h1>
-    <p>This is an  <span>user</span> page</p>
-    
-     <button onclick="window.location.href='logout.php'">Logout</button>
 
-    
-    <div">  
-      
+    <h1>Welcome, <span><?= $_SESSION['name']; ?></span></h1>
+
+    <p>Manage your bookings and delivery requests easily.</p>
+
+    <div class="top-buttons">
+        <button onclick="window.location.href='add.php'"> + Add Service </button>
+
+        <button onclick="window.location.href='logout.php'"> Logout</button>
+
+    </div>
+
+   
+
 </body>
 </html>

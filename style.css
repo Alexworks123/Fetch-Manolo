@@ -108,4 +108,60 @@ span {
     display: block;
     width: 300px;
     margin: 0 auto;
+}   
+
+body {
+    color: #333;
+}
+
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 100px auto;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+a {
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    background: #7494ec;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+}
+th {
+    text-align: left;
+}
+
+.btn-delete {
+    background: #e03131;
+    margin-left: 5px;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f2f2f2;
+}
+
+.form-wrapper {
+    background: #fff;
+    width: 700px;
+    padding: 40px 40px 50px;
+    border-radius: 10px;
 }
