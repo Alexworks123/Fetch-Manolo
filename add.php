@@ -10,7 +10,7 @@
 
     <div class="wrapper">
         <div class="form-wrapper">
-            <h1>Add Service</h1>
+            <h1>Service Request</h1>
             <form method="POST" action="action.php">
                 <input type="text" name="name" placeholder="Full Name" required>
                  <input type="text" name="Phone" placeholder="Phone" required>
