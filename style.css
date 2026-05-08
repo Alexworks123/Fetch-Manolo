@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", serif;
+    font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -14,154 +14,158 @@ body {
     min-height: 100vh;
     background: linear-gradient(to right, #e2e2e2, #c9d6ff);
     color: #333;
-}
-.container {
-    margin: 0 15px;
+    padding: 20px;
 }
 
-.form-box {
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.form-box, .form-wrapper {
     width: 100%;
     max-width: 450px;
     padding: 30px;
     background: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+.form-wrapper {
+    max-width: 550px; 
+}
+
+.form-box {
     display: none;
 }
-.form-box.active{
+
+.form-box.active {
     display: block;
 }
 
-h2 {
-    font-size: 34px;
+h1, h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: #333;
 }
 
-input,
-select {
+h1 { font-size: 36px; }
+h2 { font-size: 30px; }
+
+
+input, select, textarea {
     width: 100%;
     padding: 12px;
-    background: #eee;
+    background: #f9f9f9;
+    border: 1.5px solid #ddd;
     border-radius: 6px;
-    border: none;
     outline: none;
     font-size: 16px;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
 }
 
-button {
-    width: 100%;
+input:focus, textarea:focus {
+    border-color: #7494ec;
+}
+
+textarea {
+    height: 120px;
+    resize: none;
+}
+
+
+.btn-box {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+button, .btn-link {
+    flex: 1; 
     padding: 12px;
-    background: #7494ec;
     border-radius: 6px;
     border: none;
     cursor: pointer;
     font-size: 16px;
-    color: #fff;
     font-weight: 500;
-    margin-bottom: 20px;
-    transition: 0.5s;
+    text-align: center;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+button {
+    background: #7494ec;
+    color: #fff;
 }
 
 button:hover {
     background: #6884d3;
 }
 
-p {
-    font-size: 14.5px;
-    text-align: center;
-    margin-bottom: 10px;
-}
 
-p a {
+.btn-box a, .btn-link-outline {
+    background: transparent;
     color: #7494ec;
-    text-decoration: none;
+    border: 2px solid #7494ec;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
-p a:hover {
-    text-decoration: underline;
+.btn-box a:hover {
+    background: #7494ec;
+    color: #fff;
 }
-.error-message {
-    padding: 12px;
-    background: #f8d7da;
-    border-radius: 6px;
-    font-size: 16px;
-    color: #a42834;
-    text-align: center;
-    margin-bottom: 20px;
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
 }
-h1 {
-    font-size: 50px;
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background: #f4f4f4;
+}
+
+
+.btn-delete {
+    background: #e03131;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
 span {
     color: #7494ec;
 }
 
-.box p {
-    font-size: 22px;
+p {
+    font-size: 14.5px;
+    text-align: center;
+    margin-top: 10px;
 }
 
-.box button {
-    display: block;
-    width: 300px;
-    margin: 0 auto;
-}   
-
-body {
-    color: #333;
-}
-
-.container {
-    width: 100%;
-    max-width: 1400px;
-    margin: 100px auto;
-}
-
-h1 {
-    margin-bottom: 20px;
-}
-a {
-    padding: 8px 15px;
-    border-radius: 4px;
+p a {
+    color: #7494ec;
     text-decoration: none;
-    color: #fff;
-    background: #7494ec;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th,
-td {
-    border-bottom: 1px solid #ddd;
-    padding: 15px;
-}
-th {
-    text-align: left;
-}
-
-.btn-delete {
-    background: #e03131;
-    margin-left: 5px;
-}
-
-.wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #f2f2f2;
-}
-
-.form-wrapper {
-    background: #fff;
-    width: 700px;
-    padding: 40px 40px 50px;
-    border-radius: 10px;
+    font-weight: bold;
 }
