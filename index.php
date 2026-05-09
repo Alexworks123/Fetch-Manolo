@@ -98,9 +98,7 @@ function showFields(){
            name="plate"
            placeholder="Plate Number">
 
-    <input type="text"
-           name="address"
-           placeholder="Barangay Address">
+  
 
 </div>
                 <button type="submit" name="Register">Register</button>
