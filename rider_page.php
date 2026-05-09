@@ -35,9 +35,24 @@ $result = mysqli_query($conn, $query);
     <p>Rider Service Dashboard</p>
 
     <div class="top-buttons">
-       <button onclick="window.location.reload();" class="request-btn">🔄 Refresh Requests</button>
-        <button onclick="window.location.href='logout.php'" class="logout-btn">Logout</button>
+        <button onclick="window.location.href='rider_profile.php'" class="profile-btn" style="background-color: #4dabf7; color: white;">👤 My Profile</button>
+        
+
     </div>
+    <div class="top-buttons">    
+        
+    </div>
+
+
+
+    
+    <div class="top-buttons">
+       
+        
+       <button onclick="window.location.reload();" class="request-btn">🔄 Refresh Requests</button>
+      
+    </div>
+
 
     <div class="table-container">
         <h3>Available Bookings</h3>
@@ -71,6 +86,7 @@ $result = mysqli_query($conn, $query);
         <td>
             <a href="accept_order.php?id=<?php echo $row['id']; ?>" class="accept-btn">Accept</a>
         </td>
+        
     </tr>
 
 

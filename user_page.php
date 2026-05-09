@@ -26,8 +26,9 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE email 
         <a href="user_profile.php" style="background: #748ffc; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;">
             👤 My Profile
         </a>
-        <a href="logout.php" style="background: #748ffc; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
-            Logout
+        
+        <a href="order_status.php" style="background: #748ffc; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+            Track My Order
         </a>
     </div>
 
