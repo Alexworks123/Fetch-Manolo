@@ -33,11 +33,11 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE email 
 
     <div style="margin-bottom: 40px;">
         <a href="add.php" style="background: #4c6ef5; color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            + Add Order
+            🛵 Request a Rider
         </a>
     </div>
 
-    <h3 style="color: #333; margin-bottom: 20px;">Available Riders Near You</h3>
+    <h3 style="color: #333; margin-bottom: 20px;">Available Riders</h3>
 
    <div class="table-container" style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
     <h3 style="text-align: left; color: #333; margin-bottom: 15px; font-family: sans-serif;">Available Riders</h3>
