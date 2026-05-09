@@ -34,24 +34,16 @@ $result = mysqli_query($conn, $query);
     <h2>Welcome, <span><?= htmlspecialchars($_SESSION['name']); ?></span></h2>
     <p>Rider Service Dashboard</p>
 
-    <div class="top-buttons">
-        <button onclick="window.location.href='rider_profile.php'" class="profile-btn" style="background-color: #4dabf7; color: white;">👤 My Profile</button>
-        
-
+   <div class="header-nav" style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto 20px;">
+    <div class="left-buttons">
+        <button onclick="window.location.href='rider_profile.php'" class="btn-profile" style="background: #4dabf7; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">👤 My Profile</button>
+        <button onclick="window.location.reload();" class="btn-refresh" style="background: #748ffc; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-left: 5px;">🔄 Refresh</button>
     </div>
-    <div class="top-buttons">    
-        
-    </div>
-
-
-
     
-    <div class="top-buttons">
-       
-        
-       <button onclick="window.location.reload();" class="request-btn">🔄 Refresh Requests</button>
-      
+    <div class="right-buttons">
+        <button onclick="window.location.href='logout.php'" class="btn-logout" style="background: #fa5252; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">Logout 🚪</button>
     </div>
+</div>
 
 
     <div class="table-container">

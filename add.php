@@ -22,7 +22,8 @@ $selected_rider = isset($_GET['rider_name']) ? $_GET['rider_name'] : '';
 <form method="POST" action="action.php">
     <input type="hidden" name="assigned_rider" value="<?php echo htmlspecialchars($selected_rider); ?>">
     
-    <input type="text" name="customer_name" placeholder="Full Name" required>
+    <input type="text" name="customer_name" value="<?php echo $_SESSION['name']; ?>" readonly>
+    
     <input type="text" name="phone" placeholder="Phone" required>
     <input type="text" name="pickup_location" placeholder="Pick-up Location" required>
     <input type="text" name="dropoff_location" placeholder="Drop-off Location" required>

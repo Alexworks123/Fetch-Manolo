@@ -20,7 +20,7 @@ if (isset($_GET['id'])) {
 
 
 if (mysqli_query($conn, $sql)) {
-    // Redirect to the Rider's personal profile/active tasks page
+
     header("Location: rider_profile.php?status=success");
     exit();
 
