@@ -23,4 +23,18 @@ if (mysqli_query($conn, $sql)) {
 } else {
     echo "❌ SQL Error: " . mysqli_error($conn);
 }
+
+if (isset($_GET['id']) && isset($_GET['from'])) {
+    $order_id = mysqli_real_escape_string($conn, $_GET['id']);
+    $redirect = $_GET['from'];
+
+    $query = "DELETE FROM orders WHERE id = '$order_id'";
+    
+    if (mysqli_query($conn, $query)) {
+        header("Location: $redirect.php?msg=deleted");
+    } else {
+        header("Location: $redirect.php?msg=error");
+    }
+}
+exit();
 ?>
