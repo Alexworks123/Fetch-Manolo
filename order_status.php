@@ -16,6 +16,8 @@ $query = "SELECT * FROM orders
 
 $result = mysqli_query($conn, $query);
 $order = mysqli_fetch_assoc($result);
+
+$status = $order['status'];
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +73,16 @@ $order = mysqli_fetch_assoc($result);
             <a href="user_page.php" style="color: #4c6ef5; font-weight: bold; text-decoration: none;">Request a Rider Now</a>
         </div>
     <?php endif; ?>
+    
+    <div style="margin-top: 20px;">
+    <?php if ($status == 'Pending'): ?>
+       <a href="delete_order.php?id=<?php echo $order['id']; ?>"
+           onclick="return confirm('Are you sure you want to cancel this order?')" 
+           style="color: #ff6b6b; text-decoration: none; font-size: 0.9rem; font-weight: bold; border: 1px solid #ff6b6b; padding: 5px 10px; border-radius: 5px;">
+           ❌ Cancel Order
+        </a>
+    <?php endif; ?>
+</div>
 
     <a href="user_page.php" class="nav-links">← Back to Dashboard</a>
     <a href="logout.php" class="nav-links" style="color: #fa5252; font-size: 0.8rem; margin-top: 15px;">Logout</a>

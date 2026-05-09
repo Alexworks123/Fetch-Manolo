@@ -10,14 +10,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'rider') {
 $rider_name = $_SESSION['name'];
 $user_id = $_SESSION['user_id'];
 
-// Fetch all rider details including vehicle info
+
 $user_query = "SELECT * FROM users WHERE id = '$user_id'";
 $user_result = mysqli_query($conn, $user_query);
 $user_data = mysqli_fetch_assoc($user_result);
 
-// Delivery Logic remains the same as your current dashboard
+
 $active_query = "SELECT * FROM orders WHERE assigned_rider = '$rider_name' 
-                 AND (status = 'Accepted' OR status = 'Picked Up') LIMIT 1";
+                  AND (status = 'Accepted' OR status = 'Picked Up') LIMIT 1";
 $active_result = mysqli_query($conn, $active_query);
 $active_job = mysqli_fetch_assoc($active_result);
 
@@ -36,12 +36,10 @@ $history_result = mysqli_query($conn, $history_query);
         body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
         .wrapper { max-width: 900px; margin: 0 auto; }
         
-        /* Profile Card Styling */
         .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 25px; }
         .profile-header { display: flex; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px; }
         .avatar { width: 60px; height: 60px; background: #4dabf7; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin-right: 20px; }
         
-        /* 3-Column Grid for Rider Info */
         .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .info-item label { display: block; font-size: 0.75rem; color: #888; text-transform: uppercase; font-weight: bold; }
         .info-item p { margin: 5px 0; font-weight: 600; color: #333; font-size: 0.95rem; }
@@ -67,32 +65,32 @@ $history_result = mysqli_query($conn, $history_query);
             <h2 style="margin: 0;">Rider Profile</h2>
         </div>
         
-     <div class="info-grid">
-    <div class="info-item">
-        <label>Full Name</label>
-        <p><?php echo htmlspecialchars($user_data['name']); ?></p>
-    </div>
-    <div class="info-item">
-        <label>Email Address</label>
-        <p><?php echo htmlspecialchars($user_data['email']); ?></p>
-    </div>
-    <div class="info-item">
-        <label>Phone Number</label>
-        <p><?php echo htmlspecialchars($user_data['phone']); ?></p>
-    </div>
-    <div class="info-item">
-        <label>Driver License</label>
-        <p><?php echo htmlspecialchars($user_data['license'] ?: 'N/A'); ?></p>
-    </div>
-    <div class="info-item">
-        <label>Vehicle Type</label>
-        <p><?php echo htmlspecialchars($user_data['vehicle'] ?: 'N/A'); ?></p>
-    </div>
-    <div class="info-item">
-        <label>Plate Number</label>
-        <p><?php echo htmlspecialchars($user_data['plate'] ?: 'N/A'); ?></p>
-    </div>
-</div>
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Full Name</label>
+                <p><?php echo htmlspecialchars($user_data['name']); ?></p>
+            </div>
+            <div class="info-item">
+                <label>Email Address</label>
+                <p><?php echo htmlspecialchars($user_data['email']); ?></p>
+            </div>
+            <div class="info-item">
+                <label>Phone Number</label>
+                <p><?php echo htmlspecialchars($user_data['phone']); ?></p>
+            </div>
+            <div class="info-item">
+                <label>Driver License</label>
+                <p><?php echo htmlspecialchars($user_data['license'] ?: 'N/A'); ?></p>
+            </div>
+            <div class="info-item">
+                <label>Vehicle Type</label>
+                <p><?php echo htmlspecialchars($user_data['vehicle'] ?: 'N/A'); ?></p>
+            </div>
+            <div class="info-item">
+                <label>Plate Number</label>
+                <p><?php echo htmlspecialchars($user_data['plate'] ?: 'N/A'); ?></p>
+            </div>
+        </div>
         <div style="margin-top: 25px; display: flex; gap: 10px;">
             <a href="rider_page.php" class="btn btn-blue">Back to Dashboard</a>
             <a href="logout.php" class="btn btn-red">Logout</a>
@@ -104,7 +102,11 @@ $history_result = mysqli_query($conn, $history_query);
         <?php if ($active_job): ?>
             <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 5px solid #4dabf7;">
                 <p><strong>Customer:</strong> <?php echo htmlspecialchars($active_job['customer_name']); ?></p>
+                
+                <p><strong>Note:</strong> <i style="color: #555;"><?php echo htmlspecialchars($active_job['description'] ?? 'No special instructions'); ?></i></p>
+                
                 <p><strong>Drop-off:</strong> <?php echo htmlspecialchars($active_job['dropoff_location']); ?></p>
+                
                 <div style="margin-top: 15px;">
                     <?php if ($active_job['status'] == 'Accepted'): ?>
                         <a href="update_status.php?id=<?php echo $active_job['id']; ?>&new_status=Picked Up" class="btn" style="background: #fcc419;">📦 Pick Up Item</a>

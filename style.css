@@ -230,3 +230,32 @@ p a {
     display: flex;
     gap: 15px;
 }
+.refresh-btn {
+    background-color: #748ffc; /* Soft Blue */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.refresh-btn:hover {
+    background-color: #5c7cfa; /* Darker blue on hover */
+}
+.refresh-btn {
+    background-color: transparent;
+    color: #748ffc;
+    border: 2px solid #748ffc;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.refresh-btn:hover {
+    background-color: #f1f3f5;
+}
