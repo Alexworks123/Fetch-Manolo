@@ -13,8 +13,7 @@ if (isset($_POST['Register'])) {
     $phone = $_POST['phone'] ?? ''; 
     $address = $_POST['address'] ?? '';
 
-    // ADD THESE: Capture the data from the form
-    // Use the 'name' attributes from your index.php inputs
+ 
     $license = $_POST['license'] ?? ''; 
     $vehicle = $_POST['vehicle'] ?? '';
     $plate = $_POST['plate'] ?? '';
@@ -29,10 +28,11 @@ if (isset($_POST['Register'])) {
         $_SESSION['active_form'] = 'register';
     } else {
       
-        $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, phone, address, license, vehicle, plate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        
-       
-        $stmt->bind_param("sssssssss", $name, $email, $password, $role, $phone, $address, $license, $vehicle, $plate);
+     
+$stmt = $conn->prepare("INSERT INTO users (name, email, password, role, phone, address, license, vehicle, plate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+
+$stmt->bind_param("sssssssss", $name, $email, $password, $role, $phone, $address, $license, $vehicle, $plate);
 
         if ($stmt->execute()) {
             $_SESSION['register_success'] = "Registration successful!";

@@ -222,7 +222,7 @@ p a {
     font-weight: 500;
     color: #333;
     margin: 0;
-    text-align: left; /* Overrides your global center text */
+    text-align: left; 
 }
 
 .profile-actions {
@@ -231,7 +231,7 @@ p a {
     gap: 15px;
 }
 .refresh-btn {
-    background-color: #748ffc; /* Soft Blue */
+    background-color: #748ffc; 
     color: white;
     border: none;
     padding: 8px 16px;
@@ -242,7 +242,7 @@ p a {
 }
 
 .refresh-btn:hover {
-    background-color: #5c7cfa; /* Darker blue on hover */
+    background-color: #5c7cfa;
 }
 .refresh-btn {
     background-color: transparent;

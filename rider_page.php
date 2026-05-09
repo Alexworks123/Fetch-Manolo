@@ -7,8 +7,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'rider') {
     exit();
 }
 
-
 $current_rider_name = $_SESSION['name']; 
+
+$check_busy = mysqli_query($conn, "SELECT id FROM orders WHERE assigned_rider = '$current_rider_name' AND (status = 'Accepted' OR status = 'Picked Up')");
+$is_busy = mysqli_num_rows($check_busy) > 0;
 
 $query = "SELECT * FROM orders 
           WHERE status = 'Pending' 
@@ -24,7 +26,6 @@ $result = mysqli_query($conn, $query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rider Page</title>
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -45,7 +46,6 @@ $result = mysqli_query($conn, $query);
     </div>
 </div>
 
-
     <div class="table-container">
         <h3>Available Bookings</h3>
         <table>
@@ -65,23 +65,31 @@ $result = mysqli_query($conn, $query);
                 $count = 1;
                 if (mysqli_num_rows($result) > 0):
                    while ($row = mysqli_fetch_assoc($result)) {
-    $orderType = (empty($row['assigned_rider'])) ? "Global" : "Direct";
-    $typeColor = ($orderType == "Direct") ? "#ff6b6b" : "#748ffc"; // Red for Direct, Blue for Global
-    ?>
-    <tr>
-        <td><?php echo $count++; ?></td>
-        <td><?php echo htmlspecialchars($row['customer_name']); ?></td>
-        <td><span style="color: <?php echo $typeColor; ?>; font-weight: bold;"><?php echo $orderType; ?></span></td>
-        <td><?php echo htmlspecialchars($row['pickup_location']); ?></td>
-        <td><?php echo htmlspecialchars($row['dropoff_location']); ?></td>
-        <td><span class="badge"><?php echo $row['status']; ?></span></td>
-        <td>
-            <a href="accept_order.php?id=<?php echo $row['id']; ?>" class="accept-btn">Accept</a>
-        </td>
-        
-    </tr>
-
-
+                    $orderType = (empty($row['assigned_rider'])) ? "Global" : "Direct";
+                    $typeColor = ($orderType == "Direct") ? "#ff6b6b" : "#748ffc";
+                ?>
+                <tr>
+                    <td><?php echo $count++; ?></td>
+                    <td><?php echo htmlspecialchars($row['customer_name']); ?></td>
+                    <td><span style="color: <?php echo $typeColor; ?>; font-weight: bold;"><?php echo $orderType; ?></span></td>
+                    <td><?php echo htmlspecialchars($row['pickup_location']); ?></td>
+                    <td><?php echo htmlspecialchars($row['dropoff_location']); ?></td>
+                    <td><span class="badge"><?php echo $row['status']; ?></span></td>
+                  
+                    <td>
+                        <?php if (!$is_busy): ?>
+                            <a href="accept_order.php?id=<?php echo $row['id']; ?>" style="color: blue; font-weight: bold; text-decoration: none;">Accept</a>
+                            | 
+                            <a href="decline_order.php?id=<?php echo $row['id']; ?>" 
+                               onclick="return confirm('Are you sure you want to decline this booking?')" 
+                               style="color: #fa5252; font-weight: bold; text-decoration: none;">
+                               Decline
+                            </a>
+                        <?php else: ?>
+                            <span style="color: #adb5bd; font-size: 0.8rem;">Finish current job first</span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
                 <?php 
                     }
                 else:

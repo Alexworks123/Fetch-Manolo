@@ -2,7 +2,7 @@
 session_start();
 include('Fetch_Manolo.php');
 
-// 1. Check if ID exists in URL
+
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die("❌ Error: No ID sent from the previous page. Check your link!");
 }
@@ -10,7 +10,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $id = mysqli_real_escape_string($conn, $_GET['id']);
 echo "🔍 Debug: Attempting to delete Order ID #$id <br>";
 
-// 2. Try the query
+
 $sql = "DELETE FROM orders WHERE id = '$id'";
 
 if (mysqli_query($conn, $sql)) {

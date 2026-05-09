@@ -17,7 +17,14 @@ $query = "SELECT * FROM orders
 $result = mysqli_query($conn, $query);
 $order = mysqli_fetch_assoc($result);
 
-$status = $order['status'];
+if ($order) {
+    $status = $order['status'];
+    $order_id = $order['id'];
+} else {
+    $status = 'None';
+    $order_id = null;
+}
+
 ?>
 
 <!DOCTYPE html>
