@@ -5,7 +5,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once 'config.php';
 
-
 if (isset($_POST['Register'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -14,7 +13,12 @@ if (isset($_POST['Register'])) {
     $phone = $_POST['phone'] ?? ''; 
     $address = $_POST['address'] ?? '';
 
-   
+    // ADD THESE: Capture the data from the form
+    // Use the 'name' attributes from your index.php inputs
+    $license = $_POST['license'] ?? ''; 
+    $vehicle = $_POST['vehicle'] ?? '';
+    $plate = $_POST['plate'] ?? '';
+
     $checkEmail = $conn->prepare("SELECT email FROM users WHERE email = ?");
     $checkEmail->bind_param("s", $email);
     $checkEmail->execute();
@@ -24,24 +28,23 @@ if (isset($_POST['Register'])) {
         $_SESSION['register_error'] = 'Email is already registered!';
         $_SESSION['active_form'] = 'register';
     } else {
-     
-        $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, phone, address) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $name, $email, $password, $role, $phone, $address);
+      
+        $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, phone, address, license, vehicle, plate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        
+       
+        $stmt->bind_param("sssssssss", $name, $email, $password, $role, $phone, $address, $license, $vehicle, $plate);
 
         if ($stmt->execute()) {
-            $_SESSION['register_success'] = "Registration successful! Please login.";
+            $_SESSION['register_success'] = "Registration successful!";
             $_SESSION['active_form'] = 'login';
         } else {
-            $_SESSION['register_error'] = "Database error. Please try again.";
-            $_SESSION['active_form'] = 'register';
+            $_SESSION['register_error'] = "Error: " . $stmt->error;
         }
         $stmt->close();
     }
-    
     header("Location: index.php");
     exit();
 }
-
 
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
