@@ -1,5 +1,8 @@
+
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once 'config.php';
 
 
@@ -8,6 +11,8 @@ if (isset($_POST['Register'])) {
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $role = $_POST['role'];
+    $phone = $_POST['phone'] ?? ''; 
+    $address = $_POST['address'] ?? '';
 
    
     $checkEmail = $conn->prepare("SELECT email FROM users WHERE email = ?");
@@ -19,10 +24,10 @@ if (isset($_POST['Register'])) {
         $_SESSION['register_error'] = 'Email is already registered!';
         $_SESSION['active_form'] = 'register';
     } else {
-        // 2. Insert new user
-        $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $name, $email, $password, $role);
-        
+     
+        $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, phone, address) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $name, $email, $password, $role, $phone, $address);
+
         if ($stmt->execute()) {
             $_SESSION['register_success'] = "Registration successful! Please login.";
             $_SESSION['active_form'] = 'login';
@@ -54,14 +59,16 @@ if (isset($_POST['login'])) {
             $_SESSION['name'] = $user['name'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
+            $_SESSION['phone'] = $user['phone'] ?? '09677315738';
+            $_SESSION['address'] = $user['address'] ?? '';
 
-            // Redirect based on role
-            if ($user['role'] === 'admin') {
-                header("Location: admin_page.php");
-            } elseif ($user['role'] === 'rider') {
+       
+            if ($user['role'] === 'rider') {
                 header("Location: rider_page.php");
-            } else {
+            } elseif ($user['role'] === 'user') {
                 header("Location: user_page.php");
+            } else {
+                header("Location: index.php");
             }
             exit();
         }
