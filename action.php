@@ -1,9 +1,14 @@
 <?php
 session_start();
-include('Fetch_Manolo.php'); // Your database connection file
+include('Fetch_Manolo.php'); 
 
 if (isset($_POST['submit_order'])) {
-    // Capture the data from the form
+    // Ensure the user is logged in to get the ID for the relationship
+    if (!isset($_SESSION['user_id'])) {
+        die("Error: You must be logged in to place an order.");
+    }
+
+    $user_id = $_SESSION['user_id']; 
     $rider = mysqli_real_escape_string($conn, $_POST['assigned_rider']);
     $customer = mysqli_real_escape_string($conn, $_POST['customer_name']);
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
@@ -12,14 +17,13 @@ if (isset($_POST['submit_order'])) {
     $price = mysqli_real_escape_string($conn, $_POST['price']);
     $desc = mysqli_real_escape_string($conn, $_POST['description']);
     $service = mysqli_real_escape_string($conn, $_POST['service_type']);
-    $status = "Pending"; // Set default status
 
-    // The SQL Query to save the order
-    $sql = "INSERT INTO orders (assigned_rider, customer_name, phone, pickup, dropoff, price, description, service_type, status) 
-            VALUES ('$rider', '$customer', '$phone', '$pickup', '$dropoff', '$price', '$desc', '$service', '$status')";
+    // SQL using exact columns from your screenshot
+    $sql = "INSERT INTO orders (user_id, assigned_rider, customer_name, phone, pickup_location, dropoff_location, price, description, service_type, status) 
+            VALUES ('$user_id', '$rider', '$customer', '$phone', '$pickup', '$dropoff', '$price', '$desc', '$service', 'Pending')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Order submitted successfully!'); window.location.href='user_page.php';</script>";
+        echo "<script>alert('Order placed successfully!'); window.location.href='user_page.php';</script>";
     } else {
         echo "Error: " . mysqli_error($conn);
     }

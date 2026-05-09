@@ -56,6 +56,7 @@ if (isset($_POST['login'])) {
         $user = $result->fetch_assoc();
       
         if (password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
