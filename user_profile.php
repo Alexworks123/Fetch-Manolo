@@ -9,7 +9,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
 
 $user_id = $_SESSION['user_id'];
 
-// --- UPDATE OPERATION (Requirement: CRUD - Update) ---
+// --- PROFILE UPDATE LOGIC ---
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
     $new_phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $new_address = mysqli_real_escape_string($conn, $_POST['address']);
@@ -21,19 +21,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
     }
 }
 
+// Fetch current user details
 $user_query = "SELECT * FROM users WHERE id = '$user_id'";
 $user_result = mysqli_query($conn, $user_query);
 $user_data = mysqli_fetch_assoc($user_result);
 
-// --- READ OPERATION WITH JOIN (Requirement: SQL Joins) ---
-$history_query = "SELECT orders.*, users.name AS rider_name, users.vehicle AS rider_vehicle 
+// --- ORDER HISTORY QUERY ---
+// Joins orders with users and rider_details to get the name and vehicle type
+$history_query = "SELECT orders.*, users.name as rider_name, rider_details.vehicle as rider_vehicle 
                   FROM orders 
                   LEFT JOIN users ON orders.assigned_rider = users.name 
+                  LEFT JOIN rider_details ON users.id = rider_details.user_id
                   WHERE orders.user_id = '$user_id' 
+                  AND orders.status IN ('DELIVERED', 'CANCELLED')
                   ORDER BY orders.id DESC";
+
 $history_result = mysqli_query($conn, $history_query);
 
-// --- CHART DATA (Requirement: Dashboard Analytics) ---
+// --- CHART DATA QUERY ---
 $chart_query = "SELECT service_type, COUNT(*) as count FROM orders WHERE user_id = '$user_id' GROUP BY service_type";
 $chart_result = mysqli_query($conn, $chart_query);
 $labels = [];
@@ -64,8 +69,11 @@ while($chart_row = mysqli_fetch_assoc($chart_result)) {
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; font-size: 0.9rem; }
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
-        .completed { background: #ebfbee; color: #2b8a3e; }
-        .pending { background: #fff4e6; color: #fd7e14; }
+        
+        /* Badge Colors */
+        .delivered { background: #ebfbee; color: #2b8a3e; }
+        .cancelled { background: #fff5f5; color: #fa5252; }
+        
         .chart-container { max-width: 350px; margin: 0 auto 20px auto; }
         #searchInput { padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 8px; margin-top: 15px; box-sizing: border-box; }
         .btn-save { background: #51cf66; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
@@ -94,7 +102,6 @@ while($chart_row = mysqli_fetch_assoc($chart_result)) {
         </div>
         <form method="POST">
             <div class="info-grid">
-            
                 <div class="info-item"><label>Full Name</label><p><?php echo htmlspecialchars($user_data['name']); ?></p></div>
                 <div class="info-item"><label>Email</label><p><?php echo htmlspecialchars($user_data['email']); ?></p></div>
                 <div class="info-item">
@@ -105,22 +112,18 @@ while($chart_row = mysqli_fetch_assoc($chart_result)) {
                     <label>Address</label>
                     <input type="text" name="address" class="edit-input" value="<?php echo htmlspecialchars($user_data['address'] ?? ''); ?>">
                 </div>
-                
-                
             </div>
-            <button type="submit" name="update_profile" class="btn-save">Update Profile</button>
-                       <a href="logout.php" style="background: #ff6b6b; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; margin-top: 10px;">
-    Logout
-</a>
-            <a href="user_page.php" style="margin-left:10px; text-decoration:none; color:#888;">Back to Dashboard</a>
- 
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <button type="submit" name="update_profile" class="btn-save">Update Profile</button>
+                <a href="logout.php" style="background: #ff6b6b; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px;">Logout</a>
+                <a href="user_page.php" style="margin-top: 10px; text-decoration:none; color:#888;">Back to Dashboard</a>
+            </div>
         </form>
-        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search order history...">
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search order history by service or rider...">
     </div>
-    
 
     <div class="card">
-        <h3> Order History </h3>
+        <h3>Order History</h3>
         <table>
             <thead>
                 <tr>
@@ -131,29 +134,40 @@ while($chart_row = mysqli_fetch_assoc($chart_result)) {
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php while($row = mysqli_fetch_assoc($history_result)): ?>
+            <tbody id="historyTable">
+                <?php if(mysqli_num_rows($history_result) > 0): ?>
+                    <?php while($row = mysqli_fetch_assoc($history_result)): ?>
+                        <tr>
+                            <td><strong><?php echo htmlspecialchars($row['service_type']); ?></strong></td>
+                            <td>
+                                <div><?php echo htmlspecialchars($row['rider_name'] ?? 'N/A'); ?></div>
+                                <small style="color: #888;"><?php echo htmlspecialchars($row['rider_vehicle'] ?? ''); ?></small>
+                            </td>
+                            <td>₱<?php echo number_format($row['price'], 2); ?></td>
+                            <td>
+                                <span class="badge <?php echo strtolower($row['status']); ?>">
+                                    <?php echo $row['status']; ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="delete_order.php?id=<?php echo $row['id']; ?>&from=user_profile" 
+                                   onclick="return confirm('Delete this record from history?')" 
+                                   style="color: #fa5252; text-decoration: none; font-weight: bold;">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
                     <tr>
-                        <td><strong><?php echo htmlspecialchars($row['service_type']); ?></strong></td>
-                        <td>
-                            <div><?php echo htmlspecialchars($row['rider_name'] ?? 'Finding Rider...'); ?></div>
-                            <small style="color: #888;"><?php echo htmlspecialchars($row['rider_vehicle'] ?? ''); ?></small>
-                        </td>
-                        <td>₱<?php echo number_format($row['price'], 2); ?></td>
-                        <td><span class="badge <?php echo strtolower(str_replace(' ', '', $row['status'])); ?>"><?php echo $row['status']; ?></span></td>
-                        <td>
-                            <a href="delete_order.php?id=<?php echo $row['id']; ?>&from=user_profile" 
-                               onclick="return confirm('Delete from history?')" style="color: #fa5252; text-decoration: none; font-weight: bold;">Delete</a>
-                        </td>
+                        <td colspan="5" style="text-align: center; color: #888; padding: 20px;">No history records found.</td>
                     </tr>
-                <?php endwhile; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 </div>
 
 <script>
-// Chart logic
+// --- Chart.js Logic ---
 const ctx = document.getElementById('userOrderChart').getContext('2d');
 new Chart(ctx, {
     type: 'doughnut',
@@ -167,22 +181,16 @@ new Chart(ctx, {
     options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
 });
 
-
+// --- Real-time Search Logic ---
 function filterTable() {
     let input = document.getElementById("searchInput");
     let filter = input.value.toLowerCase();
-    let table = document.querySelector("table");
+    let table = document.getElementById("historyTable");
     let tr = table.getElementsByTagName("tr");
-    for (let i = 1; i < tr.length; i++) {
-        let visible = false;
-        let td = tr[i].getElementsByTagName("td");
-        for (let j = 0; j < td.length; j++) {
-            if (td[j] && td[j].innerText.toLowerCase().indexOf(filter) > -1) {
-                visible = true;
-                break;
-            }
-        }
-        tr[i].style.display = visible ? "" : "none";
+    
+    for (let i = 0; i < tr.length; i++) {
+        let textContent = tr[i].innerText.toLowerCase();
+        tr[i].style.display = textContent.includes(filter) ? "" : "none";
     }
 }
 </script>
